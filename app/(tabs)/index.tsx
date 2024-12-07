@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Platform } from 'react-native';
+import { ScrollView, View, Platform, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from'@react-navigation/native-stack';
 import  { StatusBar } from 'expo-status-bar';
 
-import { CoinAnalysis } from '@/components/CoinAnalysis';
-import { DailyRecommendations } from '@/components/DailyRecommendations';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { Button } from '@/components/ui/button';
+import { CoinAnalysis } from '../../components/CoinAnalysis';
+import { DailyRecommendations } from '../../components/DailyRecommendations';
+import { ThemedText } from '../../components/ThemedText';
+import { ThemedView } from '../../components/ThemedView';
+import { Button } from '../../components/ui/button';
 
 type RootStackParamList = {
   Home: undefined;
@@ -24,22 +24,43 @@ export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<'analysis' | 'recommendation'>('analysis');
 
   return (
-<ScrollView style={{ flex: 1, backgroundColor: 'background' }}>
+<ScrollView style={styles.container}>
   <StatusBar style="auto" />
-      <ThemedView style={{ padding: 16 }}>
-        <ThemedText type="title" style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 16 }}>Welcome to your Crypto-Analyser App!</ThemedText>
-      <View style={{ flexDirection: 'row', marginBottom: 16 }}>
+      <ThemedView style={styles.content}>
+        <ThemedText type="title" style={styles.title}>Welcome to your Crypto-Analyser App!</ThemedText>
+      <View style={styles.tabContainer}>
         <Button 
         onPress={() => setActiveTab('analysis')} 
-        style={{ marginRight: 8, backgroundColor: activeTab === 'analysis' ? 'primary' : 'secondary' }}
-        title="Coin Analysis" />
+        className={activeTab === 'analysis' ? 'bg-primary' : 'bg-secondary'}
+        > Coin Analysis 
+        </Button>
         <Button 
         onPress={() => setActiveTab('recommendation')} 
-        style={{ backgroundColor: activeTab === 'recommendation' ? 'primary' : 'secondary' }}
-        />
+        className={activeTab === 'recommendation' ? 'bg-primary' : 'bg-secondary'}
+        > Daily Recommendations
+        </Button>
         </View>
         { activeTab === 'analysis' ? <CoinAnalysis /> : <DailyRecommendations />}
       </ThemedView>
        </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'background',
+  },
+  content: {
+    padding: 16,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    marginBottom: 16,
+  },
+});
